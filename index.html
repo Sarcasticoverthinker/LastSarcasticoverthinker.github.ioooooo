@@ -656,25 +656,24 @@
 // Enhanced Birthday Countdown
 // Enhanced Birthday Countdown
 function updateCountdown() {
-    const birthday = new Date(new Date().getFullYear(), 4, 12); // May is month 4 (0-indexed)
+    const birthday = new Date(new Date().getFullYear(), 4, 12); // May 12th (month is 0-indexed)
     const now = new Date();
-    const currentYear = now.getFullYear();
-    
+
     // If the birthday has already passed this year, set it for next year
     if (now > birthday) {
-        birthday.setFullYear(currentYear + 1);
+        birthday.setFullYear(now.getFullYear() + 1);
     }
 
-    const diff = birthday - now;
-    
+    const diff = birthday - now; // Difference in milliseconds
+
+    // If it's her birthday today
     if (diff <= 0) {
-        // If it's her birthday today
         document.getElementById('countdown').innerHTML = `
             <div class="timer-unit" style="background: #ff69b4;">
                 <span>🎉</span>
                 <span class="unit-label">Happy Birthday!</span>
             </div>`;
-        document.getElementById('birthdayMessage').innerHTML = 
+        document.getElementById('birthdayMessage').textContent = 
             "The kingdom celebrates its beloved princess today! 🎂👸";
         triggerCelebrations();
         return;
@@ -685,9 +684,6 @@ function updateCountdown() {
 
     // Update the countdown display
     document.getElementById('days').textContent = days.toString().padStart(2, '0');
-    document.getElementById('hours').textContent = '00';
-    document.getElementById('minutes').textContent = '00';
-    document.getElementById('seconds').textContent = '00';
 
     // Update the birthday message based on days left
     const messages = [
@@ -723,15 +719,6 @@ function triggerCelebrations() {
 }
 
 // Update the countdown every second
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes flip {
-        0% { transform: rotateX(0deg); }
-        50% { transform: rotateX(90deg); }
-        100% { transform: rotateX(0deg); }
-    }
-`;
-document.head.appendChild(style);
 setInterval(updateCountdown, 1000);
 updateCountdown();
     </script>
