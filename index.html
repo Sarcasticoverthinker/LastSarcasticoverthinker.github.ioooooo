@@ -19,6 +19,30 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #f3e8ff;
+        }
+
+        body.dark-mode header {
+            background: #4b0082;
+        }
+
+        body.dark-mode .button {
+            background-color: #8e44ad;
+        }
+
+        body.dark-mode .notes textarea {
+            background: #333;
+            color: #fff;
+        }
+
+        body.dark-mode .saved-notes {
+            background: #444;
         }
 
         /* Book Container */
@@ -30,6 +54,11 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            transition: background 0.5s;
+        }
+
+        body.dark-mode .book {
+            background: rgba(0, 0, 0, 0.8);
         }
 
         /* Page Styling */
@@ -147,11 +176,30 @@
             font-size: 20px; /* Smaller hearts for mobile */
             animation: float 5s linear infinite;
         }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #6a2c91;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: #f3e8ff;
+        }
     </style>
 </head>
 <body>
     <!-- Book Container -->
     <div class="book">
+        <!-- Dark Mode Toggle -->
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+
         <!-- Page 1: Header -->
         <div class="page active" id="page1">
             <header>
@@ -292,6 +340,21 @@
                 savedNotesContainer.appendChild(noteElement);
             });
         }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Inside Joke Easter Egg
+        let pickleCount = 0;
+        document.querySelector('footer p').addEventListener('click', function() {
+            pickleCount++;
+            if (pickleCount === 3) {
+                alert("Okay fine, you're my favorite sour pickle too! 🥒💜");
+                pickleCount = 0;
+            }
+        });
 
         // Load notes when the page is loaded
         window.onload = loadNotes;
