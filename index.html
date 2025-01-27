@@ -13,51 +13,38 @@
             background: #f3e8ff;
             color: #4b0082;
             scroll-behavior: smooth;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: auto;
             min-height: 100vh;
         }
 
         .book {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            position: relative;
         }
 
+        /* Page Transitions */
         .page {
             display: none;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-            text-align: center;
+            transition: opacity 0.5s ease;
             padding: 30px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         .page.active {
             display: block;
             opacity: 1;
-            transform: translateY(0);
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 20px;
         }
 
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin: 15px 0;
-        }
-
-        /* Loading Screen */
+        /* Loading Screen Fix */
         .loader {
             position: fixed;
             top: 0;
@@ -83,6 +70,30 @@
             50% { transform: scale(1.2); }
         }
 
+        /* Progress Indicator Fix */
+        .page-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d8bfd8;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #8A2BE2;
+            transform: scale(1.3);
+        }
+
         /* Navigation Buttons */
         .nav-buttons {
             margin-top: 30px;
@@ -97,14 +108,12 @@
             border-radius: 25px;
             background: #8A2BE2;
             color: white;
-            font-size: 1.1em;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
+            transition: background 0.3s;
         }
 
         button:hover {
             background: #6a1b9a;
-            transform: scale(1.05);
         }
     </style>
 </head>
@@ -119,7 +128,7 @@
         <!-- Page 1 -->
         <div class="page active">
             <h1>My Dearest Khadijah</h1>
-            <p>From the moment I saw you, my heart knew it found its missing piece. Your smile lights up my world, and your kindness touches my soul.</p>
+            <p>You are the most amazing person I've ever known. Your smile lights up my world!</p>
             <div class="nav-buttons">
                 <button onclick="nextPage()">Next ➔</button>
             </div>
@@ -127,11 +136,8 @@
 
         <!-- Page 2 -->
         <div class="page">
-            <h1>Why You're Amazing</h1>
-            <p>🌟 Your compassionate heart<br>
-               💫 Your brilliant mind<br>
-               🌹 Your inner strength<br>
-               ✨ Your beautiful spirit</p>
+            <h1>Why I Love You</h1>
+            <p>Your kindness, intelligence, and beautiful soul make you truly special.</p>
             <div class="nav-buttons">
                 <button onclick="prevPage()">⬅ Back</button>
                 <button onclick="nextPage()">Next ➔</button>
@@ -140,60 +146,48 @@
 
         <!-- Page 3 -->
         <div class="page">
-            <h1>My Promise to You</h1>
-            <p>I vow to always:<br>
-               - Cherish and respect you<br>
-               - Support your dreams<br>
-               - Be your safe haven<br>
-               - Love you endlessly</p>
+            <h1>My Promise</h1>
+            <p>I will always cherish and respect you, now and forever.</p>
             <div class="nav-buttons">
                 <button onclick="prevPage()">⬅ Back</button>
                 <button onclick="nextPage()">Next ➔</button>
             </div>
         </div>
 
-        <!-- Page 4 -->
-        <div class="page">
-            <h1>Our Memories</h1>
-            <p>📸 That magical first date<br>
-               🌙 Our late-night conversations<br>
-               🤝 The way we understand each other<br>
-               💞 Every moment together</p>
-            <div class="nav-buttons">
-                <button onclick="prevPage()">⬅ Back</button>
-                <button onclick="nextPage()">Next ➔</button>
-            </div>
-        </div>
-
-        <!-- Page 5 -->
-        <div class="page">
-            <h1>Forever Yours</h1>
-            <p>You are my always and forever.<br>
-               No matter what life brings,<br>
-               I'll be by your side.<br>
-               I love you to the moon and back.</p>
-            <div class="nav-buttons">
-                <button onclick="prevPage()">⬅ Back</button>
-            </div>
+        <!-- Progress Indicator -->
+        <div class="page-indicator">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
         </div>
     </div>
 
     <script>
-        // Loading Screen
-        window.addEventListener('load', () => {
-            document.querySelector('.loader').style.opacity = '0';
+        // Fixed Loading Screen Removal
+        window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
-                document.querySelector('.loader').remove();
-            }, 500);
+                document.querySelector('.loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.loader').remove();
+                }, 500);
+            }, 1000);
         });
 
         // Page Navigation
         let currentPage = 0;
         const pages = document.querySelectorAll('.page');
+        const dots = document.querySelectorAll('.dot');
 
-        function showPage(pageIndex) {
+        function updateProgress() {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage);
+            });
+        }
+
+        function showPage(index) {
             pages.forEach(page => page.classList.remove('active'));
-            pages[pageIndex].classList.add('active');
+            pages[index].classList.add('active');
+            updateProgress();
         }
 
         function nextPage() {
@@ -210,11 +204,8 @@
             }
         }
 
-        // Add keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextPage();
-            if (e.key === 'ArrowLeft') prevPage();
-        });
+        // Initialize first page
+        showPage(0);
     </script>
 </body>
 </html>
