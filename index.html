@@ -134,12 +134,41 @@
         .saved-note {
             padding: 5px 0;
             border-bottom: 1px solid #dcdcdc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #6a2c91;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
         }
         footer {
             text-align: center;
             padding: 20px;
             font-size: 1.2em;
             color: #4b0082; /* Dark purple */
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+                padding: 0 20px;
+            }
+            .button {
+                font-size: 1.2em;
+                padding: 12px 25px;
+            }
+            .about, .notes {
+                margin: 30px 15px;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -239,7 +268,10 @@
         if (note) {
             const noteElement = document.createElement('div');
             noteElement.className = 'saved-note';
-            noteElement.textContent = note;
+            noteElement.innerHTML = `
+                ${note}
+                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+            `;
             savedNotesContainer.appendChild(noteElement);
             noteInput.value = ''; // Clear input
             saveNotes(); // Save notes to local storage
@@ -248,7 +280,7 @@
 
     function saveNotes() {
         const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const notes = Array.from(savedNotesContainer.children).map(note => note.textContent);
+        const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
         localStorage.setItem('notes', JSON.stringify(notes)); // Save notes to local storage
     }
 
@@ -258,36 +290,42 @@
         notes.forEach(note => {
             const noteElement = document.createElement('div');
             noteElement.className = 'saved-note';
-            noteElement.textContent = note;
+            noteElement.innerHTML = `
+                ${note}
+                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+            `;
             savedNotesContainer.appendChild(noteElement);
         });
     }
 
+    // Floating Hearts Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💜';
+            heart.style.position = 'fixed';
+            heart.style.zIndex = 9999;
+            heart.style.fontSize = '25px';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+    });
+
+    // Inside Joke Easter Egg
+    let pickleCount = 0;
+    document.querySelector('footer p').addEventListener('click', function() {
+        pickleCount++;
+        if (pickleCount === 3) {
+            alert("Okay fine, you're my favorite sour pickle too! 🥒💜");
+            pickleCount = 0;
+        }
+    });
+
     window.onload = loadNotes; // Load notes when the page is loaded
 </script>
-<script>
-// Floating Hearts Animation
-document.addEventListener('DOMContentLoaded', function() {
-    function createHeart() {
-        const heart = document.createElement('div');
-        heart.innerHTML = '💜';
-        heart.style.position = 'fixed';
-        heart.style.zIndex = 9999;
-        heart.style.fontSize = '25px';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
-        document.body.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 5000);
-    }
-    setInterval(createHeart, 300);
-});
-
-// Add to CSS:
-</script>
-<style>
-@keyframes float {
-    0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
-    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-}
-</style>
+</body>
+</html>
