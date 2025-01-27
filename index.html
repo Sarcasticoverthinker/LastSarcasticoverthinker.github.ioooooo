@@ -516,151 +516,155 @@
     </div>
 
     <script>
-    // Floating Hearts
-    document.addEventListener('DOMContentLoaded', function() {
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '💜';
-            heart.className = 'heart';
-            heart.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 5000);
-        }
-        setInterval(createHeart, 300);
-    });
-
-    // Page Navigation
-    const pages = document.querySelectorAll('.page');
-    const dots = document.querySelectorAll('.page-indicator .dot');
-    let currentPage = 0;
-
-    function showPage(index) {
-        pages.forEach((page, i) => {
-            page.classList.toggle('active', i === index);
+        // Floating Hearts
+        document.addEventListener('DOMContentLoaded', function() {
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💜';
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 5000);
+            }
+            setInterval(createHeart, 300);
         });
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-        });
-    }
 
-    function nextPage() {
-        if (currentPage < pages.length - 1) {
-            currentPage++;
-            showPage(currentPage);
+        // Page Navigation
+        const pages = document.querySelectorAll('.page');
+        const dots = document.querySelectorAll('.page-indicator .dot');
+        let currentPage = 0;
+
+        function showPage(index) {
+            pages.forEach((page, i) => {
+                page.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
         }
-    }
 
-    function prevPage() {
-        if (currentPage > 0) {
-            currentPage--;
-            showPage(currentPage);
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                showPage(currentPage);
+                triggerConfetti();
+            }
         }
-    }
 
-    // Compliments & Affirmations
-    const compliments = [
-        "Baby Gurl",
-        "you are the most beautiful girl in the world.",
-        "In my eyes, you shine as the most stunning girl.",
-        "I truly enjoy every moment we spend talking Khadijah",
-        "You're not just beautiful on the outside; your soul is radiant🦢",
-        "I miss you the moment our conversation ends.",
-        "Every time I see you, my heart skips a beat.",
-        "You are wonderful!!",
-        "but!",
-        "no butts, okay",
-        "but (hehe)",
-        "You’re such an adorable pain sometimes",
-        "Yu, Proper Annoying Cow",
-        "Yu sour pickle as well 🙄",
-        "Moti Moti Moti 🙄🙄🙄.",
-        "Your eyes tho 👀",
-        "Don’t worry, even as a 'T-shirt wali aunty,' you’d still outshine every aunty out there 🤧🧻",
-        "Baby Gurl",
-        "You have the perfect balance of sweetness and sass 😘"
-    ];
-
-    const affirmations = [
-        "work in progress bbg",
-        "yeah :(, wip"
-    ];
-
-    let complimentIndex = 0;
-    let affirmationIndex = 0;
-
-    function changeCompliment() {
-        const button = document.querySelector('.compliments .button');
-        complimentIndex = (complimentIndex + 1) % compliments.length;
-        button.innerHTML = `Khadijah, ${compliments[complimentIndex]}`;
-        button.style.animation = 'fadeIn 0.5s';
-    }
-
-    function changeAffirmation() {
-        const button = document.querySelector('.affirmations .button');
-        affirmationIndex = (affirmationIndex + 1) % affirmations.length;
-        button.innerHTML = affirmations[affirmationIndex];
-        button.style.animation = 'fadeIn 0.5s';
-    }
-
-    // Notes Functionality
-    function addNote() {
-        const noteInput = document.getElementById('noteInput');
-        const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const note = noteInput.value.trim();
-
-        if (note) {
-            const noteElement = document.createElement('div');
-            noteElement.className = 'saved-note';
-            noteElement.innerHTML = `
-                ${note}
-                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-            `;
-            savedNotesContainer.appendChild(noteElement);
-            noteInput.value = '';
-            saveNotes();
+        
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                showPage(currentPage);
+                triggerConfetti();
+            }
         }
-    }
 
-    function saveNotes() {
-        const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
-        localStorage.setItem('notes', JSON.stringify(notes));
-    }
+        // Compliments & Affirmations
+        const compliments = [
+            "Baby Gurl",
+            "you are the most beautiful girl in the world.",
+            "In my eyes, you shine as the most stunning girl.",
+            "I truly enjoy every moment we spend talking Khadijah",
+            "You're not just beautiful on the outside; your soul is radiant🦢",
+            "I miss you the moment our conversation ends.",
+            "Every time I see you, my heart skips a beat.",
+            "You are wonderful!!",
+            "but!",
+            "no butts, okay",
+            "but (hehe)",
+            "You’re such an adorable pain sometimes",
+            "Yu, Proper Annoying Cow",
+            "Yu sour pickle as well 🙄",
+            "Moti Moti Moti 🙄🙄🙄.",
+            "Your eyes tho 👀",
+            "Don’t worry, even as a 'T-shirt wali aunty,' you’d still outshine every aunty out there 🤧🧻",
+            "Baby Gurl",
+            "You have the perfect balance of sweetness and sass 😘"
+        ];
 
-    function loadNotes() {
-        const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const notes = JSON.parse(localStorage.getItem('notes')) || [];
-        notes.forEach(note => {
-            const noteElement = document.createElement('div');
-            noteElement.className = 'saved-note';
-            noteElement.innerHTML = `
-                ${note}
-                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-            `;
-            savedNotesContainer.appendChild(noteElement);
-        });
-    }
+        const affirmations = [
+            "work in progress bbg",
+            "yeah :(, wip"
+        ];
 
-    // Dark Mode Toggle
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-    }
+        let complimentIndex = 0;
+        let affirmationIndex = 0;
 
-    // Birthday Countdown
+        function changeCompliment() {
+            const button = document.querySelector('.compliments .button');
+            complimentIndex = (complimentIndex + 1) % compliments.length;
+            button.innerHTML = `Khadijah, ${compliments[complimentIndex]}`;
+            button.style.animation = 'fadeIn 0.5s';
+        }
+
+        function changeAffirmation() {
+            const button = document.querySelector('.affirmations .button');
+            affirmationIndex = (affirmationIndex + 1) % affirmations.length;
+            button.innerHTML = affirmations[affirmationIndex];
+            button.style.animation = 'fadeIn 0.5s';
+        }
+
+        // Notes Functionality
+        function addNote() {
+            const noteInput = document.getElementById('noteInput');
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const note = noteInput.value.trim();
+
+            if (note) {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'saved-note';
+                noteElement.innerHTML = `
+                    ${note}
+                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+                `;
+                savedNotesContainer.appendChild(noteElement);
+                noteInput.value = '';
+                saveNotes();
+            }
+        }
+
+        function saveNotes() {
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        function loadNotes() {
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.forEach(note => {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'saved-note';
+                noteElement.innerHTML = `
+                    ${note}
+                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+                `;
+                savedNotesContainer.appendChild(noteElement);
+            });
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Initial Load
+        window.onload = loadNotes;
+
+// Enhanced Birthday Countdown
 function updateCountdown() {
+    const birthday = new Date(new Date().getFullYear(), 4, 12); // May is month 4 (0-indexed)
     const now = new Date();
     const currentYear = now.getFullYear();
-    const birthday = new Date(currentYear, 4, 12); // May is month 4 (0-indexed)
-
-    // If the birthday has already passed this year, set it to next year
+    
     if (now > birthday) {
         birthday.setFullYear(currentYear + 1);
     }
 
     const diff = birthday - now;
-
-    // If it's the birthday
+    
     if (diff <= 0) {
         document.getElementById('countdown').innerHTML = `
             <div class="timer-unit" style="background: #ff69b4;">
@@ -673,24 +677,23 @@ function updateCountdown() {
         return;
     }
 
-    // Calculate days, hours, minutes, and seconds
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Update the countdown display
-    document.getElementById('days').textContent = days.toString().padStart(2, '0');
-    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    // Update numbers with flip animation
+    flipNumber('days', days.toString().padStart(2, '0'));
+    flipNumber('hours', hours.toString().padStart(2, '0'));
+    flipNumber('minutes', minutes.toString().padStart(2, '0'));
+    flipNumber('seconds', seconds.toString().padStart(2, '0'));
 
-    // Update the message based on the time remaining
+    // Update messages
     const messages = [
-        { days: 30, message: "The kingdom prepares for your special day!" },
-        { days: 7, message: "One week until we celebrate you! 🎈" },
-        { days: 1, message: "Tomorrow's the big day! ✨" },
-        { days: 0, message: "It's here! Happy Birthday Princess! 👑" }
+        {days: 30, message: "The kingdom prepares for your special day!"},
+        {days: 7, message: "One week until we celebrate you! 🎈"},
+        {days: 1, message: "Tomorrow's the big day! ✨"},
+        {days: 0, message: "It's here! Happy Birthday Princess! 👑"}
     ];
 
     const currentMessage = messages.find(m => days >= m.days)?.message || 
@@ -698,11 +701,21 @@ function updateCountdown() {
     document.getElementById('birthdayMessage').textContent = currentMessage;
 }
 
-// Trigger celebrations (emoji rain)
+function flipNumber(elementId, newNumber) {
+    const element = document.getElementById(elementId);
+    if (element.textContent !== newNumber) {
+        element.style.animation = 'flip 0.5s ease';
+        setTimeout(() => {
+            element.textContent = newNumber;
+            element.style.animation = '';
+        }, 250);
+    }
+}
+
 function triggerCelebrations() {
     const container = document.getElementById('celebrations');
     container.style.display = 'block';
-
+    
     const emojis = ['🎉', '🎂', '🎁', '🎈', '👑', '💜', '✨'];
     for (let i = 0; i < 50; i++) {
         setTimeout(() => {
@@ -712,16 +725,25 @@ function triggerCelebrations() {
             emoji.style.left = Math.random() * 100 + 'vw';
             emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
             container.appendChild(emoji);
-
+            
             setTimeout(() => emoji.remove(), 3000);
         }, i * 100);
     }
 }
 
-// Update the countdown every second
+// Add flip animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes flip {
+        0% { transform: rotateX(0deg); }
+        50% { transform: rotateX(90deg); }
+        100% { transform: rotateX(0deg); }
+    }
+`;
+document.head.appendChild(style);
+
 setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call
-        
-    // Initial Load
-    window.onload = loadNotes;
+updateCountdown();
     </script>
+</body>
+</html>
