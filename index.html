@@ -266,7 +266,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         /* Page Indicator */
         .page-indicator {
             position: fixed;
@@ -290,7 +289,6 @@
         .page-indicator .dot.active {
             opacity: 1;
         }
-
         /* Back to Top Button */
         .back-to-top {
             position: fixed;
@@ -326,102 +324,43 @@
             animation: confetti-fall 2s linear infinite;
         }
 
-        /* Birthday Countdown Styles */
-        .birthday-countdown {
-            text-align: center;
-            padding: 30px;
-            margin: 30px auto;
-            max-width: 800px;
-            background: linear-gradient(135deg, #8A2BE2, #9400D3);
-            color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
-            position: relative;
-            overflow: hidden;
-            font-family: 'Playfair Display', serif;
-            border: 2px solid #fff;
-        }
+        /* Days Countdown Styles */
+.days-countdown {
+    text-align: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    background: linear-gradient(135deg, #8A2BE2, #9400D3);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    font-family: 'Playfair Display', serif;
+}
 
-        .countdown-header {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
+.days-countdown h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
 
-        .countdown-timer {
-            font-size: 2.5em;
-            margin: 20px 0;
-            letter-spacing: 3px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            font-weight: 700;
-        }
+.days-left {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 10px 0;
+    animation: pulse 1.5s infinite;
+}
 
-        .timer-unit {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px 25px;
-            border-radius: 12px;
-            min-width: 120px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
 
-        .unit-label {
-            font-size: 0.4em;
-            display: block;
-            margin-top: 5px;
-            opacity: 0.9;
-            letter-spacing: 1px;
-        }
-
-        .birthday-message {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8em;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        .progress-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        .celebrations {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10000;
-            display: none;
-        }
-
-        .birthday-emoji {
-            position: absolute;
-            font-size: 2em;
-            animation: floatUp 3s linear forwards;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
+.birthday-message {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5em;
+    margin-top: 10px;
+}
     </style>
 </head>
 <body>
@@ -434,9 +373,8 @@
                 <h1>For My Beautiful Princess Khadijah</h1>
                 <p>The epitome of beauty and grace, unmatched in the entire world.</p>
             </header>
-
             <!-- Birthday Countdown -->
-            <div class="birthday-countdown">
+            <div class="days-countdown">
                 <svg class="progress-ring" width="300" height="300">
                     <circle stroke="white" stroke-width="2" fill="transparent" r="145" cx="150" cy="150"/>
                 </svg>
@@ -652,98 +590,37 @@
 
         // Initial Load
         window.onload = loadNotes;
-
-// Enhanced Birthday Countdown
+        // Days Countdown
 function updateCountdown() {
-    const birthday = new Date(new Date().getFullYear(), 4, 12); // May is month 4 (0-indexed)
+    const birthday = new Date(new Date().getFullYear(), 4, 12); // May 12 (month is 0-indexed)
     const now = new Date();
-    const currentYear = now.getFullYear();
     
+    // If birthday has passed this year, set to next year
     if (now > birthday) {
-        birthday.setFullYear(currentYear + 1);
+        birthday.setFullYear(now.getFullYear() + 1);
     }
 
     const diff = birthday - now;
-    
-    if (diff <= 0) {
-        document.getElementById('countdown').innerHTML = `
-            <div class="timer-unit" style="background: #ff69b4;">
-                <span>🎉</span>
-                <span class="unit-label">Happy Birthday!</span>
-            </div>`;
-        document.getElementById('birthdayMessage').innerHTML = 
-            "The kingdom celebrates its beloved princess today! 🎂👸";
-        triggerCelebrations();
-        return;
-    }
+    const daysLeft = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    // Update the display
+    const daysLeftElement = document.getElementById('daysLeft');
+    const messageElement = document.getElementById('birthdayMessage');
 
-    // Update numbers with flip animation
-    flipNumber('days', days.toString().padStart(2, '0'));
-    flipNumber('hours', hours.toString().padStart(2, '0'));
-    flipNumber('minutes', minutes.toString().padStart(2, '0'));
-    flipNumber('seconds', seconds.toString().padStart(2, '0'));
-
-    // Update messages
-    const messages = [
-        {days: 30, message: "The kingdom prepares for your special day!"},
-        {days: 7, message: "One week until we celebrate you! 🎈"},
-        {days: 1, message: "Tomorrow's the big day! ✨"},
-        {days: 0, message: "It's here! Happy Birthday Princess! 👑"}
-    ];
-
-    const currentMessage = messages.find(m => days >= m.days)?.message || 
-        "Every second brings us closer to your celebration!";
-    document.getElementById('birthdayMessage').textContent = currentMessage;
-}
-
-function flipNumber(elementId, newNumber) {
-    const element = document.getElementById(elementId);
-    if (element.textContent !== newNumber) {
-        element.style.animation = 'flip 0.5s ease';
-        setTimeout(() => {
-            element.textContent = newNumber;
-            element.style.animation = '';
-        }, 250);
+    if (daysLeft === 0) {
+        daysLeftElement.textContent = "🎉";
+        messageElement.textContent = "Happy Birthday, Princess! 🎂👸";
+    } else {
+        daysLeftElement.textContent = `${daysLeft}`;
+        messageElement.textContent = daysLeft === 1 ? 
+            "Only 1 day left! Get ready! ✨" : 
+            `Only ${daysLeft} days until your special day!`;
     }
 }
 
-function triggerCelebrations() {
-    const container = document.getElementById('celebrations');
-    container.style.display = 'block';
-    
-    const emojis = ['🎉', '🎂', '🎁', '🎈', '👑', '💜', '✨'];
-    for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-            const emoji = document.createElement('div');
-            emoji.className = 'birthday-emoji';
-            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            emoji.style.left = Math.random() * 100 + 'vw';
-            emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
-            container.appendChild(emoji);
-            
-            setTimeout(() => emoji.remove(), 3000);
-        }, i * 100);
-    }
-}
-
-// Add flip animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes flip {
-        0% { transform: rotateX(0deg); }
-        50% { transform: rotateX(90deg); }
-        100% { transform: rotateX(0deg); }
-    }
-`;
-document.head.appendChild(style);
-
-setInterval(updateCountdown, 1000);
-updateCountdown();
+// Update the countdown every day
+setInterval(updateCountdown, 1000 * 60 * 60); // Update every hour
+updateCountdown(); // Initial call
     </script>
 </body>
 </html>
