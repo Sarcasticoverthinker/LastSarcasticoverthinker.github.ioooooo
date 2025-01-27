@@ -23,9 +23,8 @@
 
         /* Book Container */
         .book {
-            width: 90%;
-            max-width: 800px;
-            height: 80vh;
+            width: 100%;
+            height: 100vh;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -55,7 +54,7 @@
         /* Page Content */
         .page h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3em;
+            font-size: 2.5em; /* Smaller font for mobile */
             text-align: center;
             margin-bottom: 20px;
         }
@@ -63,16 +62,16 @@
         /* Navigation Buttons */
         .nav-buttons {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 20px;
+            gap: 10px;
         }
 
         .nav-buttons button {
-            font-size: 1.5em;
-            padding: 10px 20px;
+            font-size: 1.2em; /* Smaller buttons for mobile */
+            padding: 8px 16px;
             border: none;
             border-radius: 10px;
             background-color: #6a2c91; /* Purple */
@@ -85,6 +84,58 @@
             background-color: #8e44ad; /* Darker Purple */
         }
 
+        /* Notes Section */
+        .notes textarea {
+            width: 100%;
+            height: 100px;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        .notes button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #6a2c91; /* Purple */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .notes button:hover {
+            background-color: #8e44ad; /* Darker Purple */
+        }
+
+        .saved-notes {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #6a2c91; /* Purple border */
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .saved-note {
+            padding: 5px 0;
+            border-bottom: 1px solid #dcdcdc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #6a2c91;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
         /* Floating Hearts Animation */
         @keyframes float {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
@@ -93,7 +144,7 @@
 
         .heart {
             position: absolute;
-            font-size: 25px;
+            font-size: 20px; /* Smaller hearts for mobile */
             animation: float 5s linear infinite;
         }
     </style>
@@ -203,8 +254,47 @@
             }
         }
 
-        // Initialize first page
-        showPage(currentPage);
+        // Notes Functionality
+        function addNote() {
+            const noteInput = document.getElementById('noteInput');
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const note = noteInput.value.trim();
+
+            if (note) {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'saved-note';
+                noteElement.innerHTML = `
+                    ${note}
+                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+                `;
+                savedNotesContainer.appendChild(noteElement);
+                noteInput.value = ''; // Clear input
+                saveNotes(); // Save notes to local storage
+            }
+        }
+
+        function saveNotes() {
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
+            localStorage.setItem('notes', JSON.stringify(notes)); // Save notes to local storage
+        }
+
+        function loadNotes() {
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.forEach(note => {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'saved-note';
+                noteElement.innerHTML = `
+                    ${note}
+                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+                `;
+                savedNotesContainer.appendChild(noteElement);
+            });
+        }
+
+        // Load notes when the page is loaded
+        window.onload = loadNotes;
     </script>
 </body>
 </html>
