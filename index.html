@@ -1,60 +1,50 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Book for Khadijah</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     <style>
-        /*---------- Book Core Styles ----------*/
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Book Container */
         .book {
             position: relative;
             width: 100vw;
             height: 100vh;
-            perspective: 2500px;
-            background: #f9f4fb;
             overflow: hidden;
+            background: #f3e8ff;
         }
 
+        /* Page Styling */
         .page {
             position: absolute;
-            width: 70%;
-            height: 80%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-radius: 5px;
-            padding: 40px;
-            box-sizing: border-box;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            transition: transform 1s;
+            background: white;
+            display: none;
         }
 
-        /*---------- Your Original Styling ----------*/
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #f3e8ff;
-            color: #4b0082;
+        .page.active {
+            display: block;
+            z-index: 1;
         }
 
-        .romantic-header {
+        /* Your Original Styling */
+        header {
             text-align: center;
             padding: 30px;
             background: #9b59b6;
             color: white;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-
-        .romantic-header h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5em;
-            margin: 0;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         }
 
         .love-button {
@@ -63,225 +53,146 @@
             padding: 15px 30px;
             border: none;
             border-radius: 25px;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: all 0.3s;
             margin: 10px;
-        }
-
-        .love-button:hover {
-            background: #8e44ad;
-            transform: scale(1.05);
-        }
-
-        .about ul {
-            list-style: none;
-            padding: 0;
+            cursor: pointer;
         }
 
         .about li {
             font-size: 1.2em;
             margin: 15px 0;
-            position: relative;
-            padding-left: 35px;
+            list-style: none;
         }
 
         .about li:before {
             content: '💜';
-            position: absolute;
-            left: 0;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            margin-right: 10px;
         }
 
         .notes textarea {
             width: 100%;
             height: 100px;
-            border: 2px solid #6a2c91;
-            border-radius: 10px;
-            padding: 10px;
             margin: 10px 0;
+            padding: 10px;
         }
 
-        /*---------- Page Navigation ----------*/
-        .book-nav {
+        /* Navigation Controls */
+        .nav-buttons {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-        }
-
-        /*---------- Floating Hearts ----------*/
-        .heart {
-            position: fixed;
-            animation: float 5s linear infinite;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <!-- Cover Page -->
     <div class="book">
-        <!-- Cover Page -->
-        <div class="page active">
-            <div class="romantic-header">
+        <div class="page active" id="cover">
+            <header>
                 <h1>For My Beautiful Princess Khadijah</h1>
-                <p>The epitome of beauty and grace, unmatched in the entire world</p>
-            </div>
+                <p>The most amazing girl in the world 💜</p>
+            </header>
             <div style="text-align: center; margin-top: 50px;">
-                <button class="love-button" onclick="turnPage(1)">Open Our Story Book</button>
+                <button class="love-button" onclick="showPage(1)">Open Book</button>
             </div>
         </div>
 
         <!-- Page 1: Compliments -->
-        <div class="page">
-            <div class="romantic-header">
-                <h1>Why You're Amazing</h1>
-            </div>
+        <div class="page" id="page1">
+            <header>
+                <h2>Why You're Amazing</h2>
+            </header>
             <div style="text-align: center; margin-top: 30px;">
-                <button class="love-button" onclick="changeCompliment()" id="complimentButton">Khadijah, you are the most beautiful girl in the world.</button>
+                <button class="love-button" onclick="changeCompliment()" id="complimentBtn">
+                    Khadijah, you are the most beautiful girl in the world.
+                </button>
+            </div>
+            <div class="nav-buttons">
+                <button class="love-button" onclick="showPage(0)">Back</button>
+                <button class="love-button" onclick="showPage(2)">Next</button>
             </div>
         </div>
 
-        <!-- Page 2: Fun Facts -->
-        <div class="page">
-            <div class="romantic-header">
-                <h1>All About You</h1>
-            </div>
-            <div class="about">
+        <!-- Page 2: About -->
+        <div class="page" id="page2">
+            <header>
+                <h2>All About You</h2>
+            </header>
+            <div class="about" style="padding: 20px;">
                 <ul>
                     <li><strong>Favorite Color:</strong> Purple</li>
                     <li><strong>Favorite Drink:</strong> Oreo Milkshake</li>
                     <li><strong>Favorite Food:</strong> Butter Chicken</li>
-                    <li><strong>Loves:</strong> Laughing with friends and family</li>
-                    <li><strong>Special Talent:</strong> Professional Grammar Nazi</li>
+                    <li><strong>Loves:</strong> Laughing with friends</li>
+                    <li><strong>Special Talent:</strong> Grammar Queen</li>
                     <li><strong>Signature Trait:</strong> Ultimate Yapper</li>
                 </ul>
             </div>
+            <div class="nav-buttons">
+                <button class="love-button" onclick="showPage(1)">Back</button>
+                <button class="love-button" onclick="showPage(3)">Next</button>
+            </div>
         </div>
 
-        <!-- Page 3: Notes Section -->
-        <div class="page">
-            <div class="romantic-header">
-                <h1>Love Notes</h1>
-            </div>
-            <div class="notes">
-                <textarea id="noteInput" placeholder="Write your love note here..."></textarea>
+        <!-- Page 3: Notes -->
+        <div class="page" id="page3">
+            <header>
+                <h2>Love Notes</h2>
+            </header>
+            <div class="notes" style="padding: 20px;">
+                <textarea id="noteInput" placeholder="Write your note here..."></textarea>
                 <button class="love-button" onclick="addNote()">Add Note</button>
-                <div class="saved-notes" id="savedNotesContainer"></div>
+                <div id="savedNotes" style="margin-top: 20px;"></div>
+            </div>
+            <div class="nav-buttons">
+                <button class="love-button" onclick="showPage(2)">Back</button>
             </div>
         </div>
     </div>
 
 <script>
-//---------- Book Navigation ----------
-let currentPage = 0;
-const pages = document.querySelectorAll('.page');
-
-function turnPage(direction) {
-    const newPage = currentPage + direction;
-    if(newPage < 0 || newPage >= pages.length) return;
-    
-    pages[currentPage].classList.remove('active');
-    pages[newPage].classList.add('active');
-    currentPage = newPage;
+// Page Navigation
+function showPage(pageNumber) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    document.getElementById(`page${pageNumber}` || 'cover').classList.add('active');
 }
 
-//---------- Original Features ----------
+// Compliments System
 const compliments = [
     "Khadijah, you are the most beautiful girl in the world.",
-    "In my eyes, you shine as the most stunning girl.",
-    "I truly enjoy every moment we spend talking Khadijah.",
-    "You're not just beautiful on the outside; your soul is radiant.",
-    "I miss you the moment our conversation ends.",
-    "Khadijah, your kindness and warmth is rare.",
-    "Every time I see you, my heart skips a beat.",
-    "You are wonderful!!",
-    "You are an annoying cow as well 🙄🙄🙄.",
-    "and sour pickle as well 🙄🙄🙄.",
-    "Moti Moti Moti 🙄🙄🙄."
+    "Your smile lights up my world 💜",
+    "You're the most thoughtful person I know",
+    "Your intelligence is so attractive",
+    "I love how you care about others",
+    "You make every day better",
+    "Moti Moti Moti 🙄💜"
 ];
+let currentCompliment = 0;
 
-let currentComplimentIndex = 0;
 function changeCompliment() {
-    currentComplimentIndex = (currentComplimentIndex + 1) % compliments.length;
-    document.getElementById('complimentButton').textContent = compliments[currentComplimentIndex];
+    currentCompliment = (currentCompliment + 1) % compliments.length;
+    document.getElementById('complimentBtn').textContent = compliments[currentCompliment];
 }
 
-//---------- Notes System ----------
+// Notes System
 function addNote() {
-    const noteInput = document.getElementById('noteInput');
-    const note = noteInput.value.trim();
-    if(note) {
-        const noteElement = document.createElement('div');
-        noteElement.className = 'saved-note';
-        noteElement.innerHTML = `
-            ${note}
-            <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-        `;
-        document.getElementById('savedNotesContainer').appendChild(noteElement);
-        noteInput.value = '';
-        saveNotes();
+    const input = document.getElementById('noteInput');
+    const notesContainer = document.getElementById('savedNotes');
+    
+    if (input.value.trim()) {
+        const noteDiv = document.createElement('div');
+        noteDiv.textContent = input.value;
+        noteDiv.style.padding = "10px";
+        noteDiv.style.borderBottom = "1px solid #ddd";
+        notesContainer.appendChild(noteDiv);
+        input.value = '';
     }
 }
 
-function saveNotes() {
-    const notes = Array.from(document.querySelectorAll('.saved-note')).map(note => note.textContent.replace('×', '').trim());
-    localStorage.setItem('notes', JSON.stringify(notes));
-}
-
-function loadNotes() {
-    const notes = JSON.parse(localStorage.getItem('notes')) || [];
-    notes.forEach(note => {
-        const noteElement = document.createElement('div');
-        noteElement.className = 'saved-note';
-        noteElement.innerHTML = `
-            ${note}
-            <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-        `;
-        document.getElementById('savedNotesContainer').appendChild(noteElement);
-    });
-}
-
-//---------- Floating Hearts ----------
-function createHearts() {
-    setInterval(() => {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = '💜';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = Math.random() * 20 + 20 + 'px';
-        heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-    }, 300);
-}
-
-//---------- Easter Egg ----------
-let pickleCount = 0;
-document.querySelector('.romantic-header h1').addEventListener('click', () => {
-    pickleCount++;
-    if(pickleCount === 3) {
-        alert("Okay fine, you're my favorite sour pickle too! 🥒💜");
-        pickleCount = 0;
-    }
-});
-
-//---------- Initialize ----------
-window.onload = () => {
-    loadNotes();
-    createHearts();
-};
+// Initialize first page
+showPage(0);
 </script>
 </body>
 </html>
