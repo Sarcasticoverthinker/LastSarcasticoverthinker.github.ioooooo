@@ -648,80 +648,80 @@
     }
 
     // Birthday Countdown
-    function updateCountdown() {
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        const birthday = new Date(currentYear, 4, 12); // May is month 4 (0-indexed)
+function updateCountdown() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const birthday = new Date(currentYear, 4, 12); // May is month 4 (0-indexed)
 
-        // If the birthday has already passed this year, set it to next year
-        if (now > birthday) {
-            birthday.setFullYear(currentYear + 1);
-        }
-
-        const diff = birthday - now;
-
-        // If it's the birthday
-        if (diff <= 0) {
-            document.getElementById('countdown').innerHTML = `
-                <div class="timer-unit" style="background: #ff69b4;">
-                    <span>🎉</span>
-                    <span class="unit-label">Happy Birthday!</span>
-                </div>`;
-            document.getElementById('birthdayMessage').innerHTML = 
-                "The kingdom celebrates its beloved princess today! 🎂👸";
-            triggerCelebrations();
-            return;
-        }
-
-        // Calculate days, hours, minutes, and seconds
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        // Update the countdown display
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-
-        // Update the message based on the time remaining
-        const messages = [
-            { days: 30, message: "The kingdom prepares for your special day!" },
-            { days: 7, message: "One week until we celebrate you! 🎈" },
-            { days: 1, message: "Tomorrow's the big day! ✨" },
-            { days: 0, message: "It's here! Happy Birthday Princess! 👑" }
-        ];
-
-        const currentMessage = messages.find(m => days >= m.days)?.message || 
-            "Every second brings us closer to your celebration!";
-        document.getElementById('birthdayMessage').textContent = currentMessage;
+    // If the birthday has already passed this year, set it to next year
+    if (now > birthday) {
+        birthday.setFullYear(currentYear + 1);
     }
 
-    // Trigger celebrations (emoji rain)
-    function triggerCelebrations() {
-        const container = document.getElementById('celebrations');
-        container.style.display = 'block';
+    const diff = birthday - now;
 
-        const emojis = ['🎉', '🎂', '🎁', '🎈', '👑', '💜', '✨'];
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const emoji = document.createElement('div');
-                emoji.className = 'birthday-emoji';
-                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                emoji.style.left = Math.random() * 100 + 'vw';
-                emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
-                container.appendChild(emoji);
-
-                setTimeout(() => emoji.remove(), 3000);
-            }, i * 100);
-        }
+    // If it's the birthday
+    if (diff <= 0) {
+        document.getElementById('countdown').innerHTML = `
+            <div class="timer-unit" style="background: #ff69b4;">
+                <span>🎉</span>
+                <span class="unit-label">Happy Birthday!</span>
+            </div>`;
+        document.getElementById('birthdayMessage').innerHTML = 
+            "The kingdom celebrates its beloved princess today! 🎂👸";
+        triggerCelebrations();
+        return;
     }
 
-    // Update the countdown every second
-    setInterval(updateCountdown, 1000);
-    updateCountdown(); // Initial call
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+    // Update the countdown display
+    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+    // Update the message based on the time remaining
+    const messages = [
+        { days: 30, message: "The kingdom prepares for your special day!" },
+        { days: 7, message: "One week until we celebrate you! 🎈" },
+        { days: 1, message: "Tomorrow's the big day! ✨" },
+        { days: 0, message: "It's here! Happy Birthday Princess! 👑" }
+    ];
+
+    const currentMessage = messages.find(m => days >= m.days)?.message || 
+        "Every second brings us closer to your celebration!";
+    document.getElementById('birthdayMessage').textContent = currentMessage;
+}
+
+// Trigger celebrations (emoji rain)
+function triggerCelebrations() {
+    const container = document.getElementById('celebrations');
+    container.style.display = 'block';
+
+    const emojis = ['🎉', '🎂', '🎁', '🎈', '👑', '💜', '✨'];
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const emoji = document.createElement('div');
+            emoji.className = 'birthday-emoji';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
+            container.appendChild(emoji);
+
+            setTimeout(() => emoji.remove(), 3000);
+        }, i * 100);
+    }
+}
+
+// Update the countdown every second
+setInterval(updateCountdown, 1000);
+updateCountdown(); // Initial call
+        
     // Initial Load
     window.onload = loadNotes;
     </script>
