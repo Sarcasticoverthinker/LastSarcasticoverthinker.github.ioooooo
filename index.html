@@ -655,16 +655,18 @@
 
 // Enhanced Birthday Countdown
 function updateCountdown() {
-    const birthday = new Date(new Date().getFullYear(), 4, 12); // May is month 4 (0-indexed)
     const now = new Date();
     const currentYear = now.getFullYear();
-    
+    const birthday = new Date(currentYear, 4, 12); // May is month 4 (0-indexed)
+
+    // If the birthday has already passed this year, set it to next year
     if (now > birthday) {
         birthday.setFullYear(currentYear + 1);
     }
 
     const diff = birthday - now;
-    
+
+    // If it's the birthday
     if (diff <= 0) {
         document.getElementById('countdown').innerHTML = `
             <div class="timer-unit" style="background: #ff69b4;">
@@ -677,23 +679,24 @@ function updateCountdown() {
         return;
     }
 
+    // Calculate days, hours, minutes, and seconds
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Update numbers with flip animation
-    flipNumber('days', days.toString().padStart(2, '0'));
-    flipNumber('hours', hours.toString().padStart(2, '0'));
-    flipNumber('minutes', minutes.toString().padStart(2, '0'));
-    flipNumber('seconds', seconds.toString().padStart(2, '0'));
+    // Update the countdown display
+    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
 
-    // Update messages
+    // Update the message based on the time remaining
     const messages = [
-        {days: 30, message: "The kingdom prepares for your special day!"},
-        {days: 7, message: "One week until we celebrate you! 🎈"},
-        {days: 1, message: "Tomorrow's the big day! ✨"},
-        {days: 0, message: "It's here! Happy Birthday Princess! 👑"}
+        { days: 30, message: "The kingdom prepares for your special day!" },
+        { days: 7, message: "One week until we celebrate you! 🎈" },
+        { days: 1, message: "Tomorrow's the big day! ✨" },
+        { days: 0, message: "It's here! Happy Birthday Princess! 👑" }
     ];
 
     const currentMessage = messages.find(m => days >= m.days)?.message || 
@@ -701,21 +704,11 @@ function updateCountdown() {
     document.getElementById('birthdayMessage').textContent = currentMessage;
 }
 
-function flipNumber(elementId, newNumber) {
-    const element = document.getElementById(elementId);
-    if (element.textContent !== newNumber) {
-        element.style.animation = 'flip 0.5s ease';
-        setTimeout(() => {
-            element.textContent = newNumber;
-            element.style.animation = '';
-        }, 250);
-    }
-}
-
+// Trigger celebrations (emoji rain)
 function triggerCelebrations() {
     const container = document.getElementById('celebrations');
     container.style.display = 'block';
-    
+
     const emojis = ['🎉', '🎂', '🎁', '🎈', '👑', '💜', '✨'];
     for (let i = 0; i < 50; i++) {
         setTimeout(() => {
@@ -725,13 +718,13 @@ function triggerCelebrations() {
             emoji.style.left = Math.random() * 100 + 'vw';
             emoji.style.animationDuration = Math.random() * 2 + 3 + 's';
             container.appendChild(emoji);
-            
+
             setTimeout(() => emoji.remove(), 3000);
         }, i * 100);
     }
 }
 
-// Add flip animation
+// Add flip animation for countdown numbers
 const style = document.createElement('style');
 style.textContent = `
     @keyframes flip {
@@ -742,8 +735,9 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Update the countdown every second
 setInterval(updateCountdown, 1000);
-updateCountdown();
+updateCountdown(); // Initial call
     </script>
 </body>
 </html>
