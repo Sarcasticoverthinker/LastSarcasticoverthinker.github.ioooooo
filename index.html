@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,79 +13,116 @@
             box-sizing: border-box;
         }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f3e8ff; /* Light purple background */
+            color: #4b0082; /* Dark purple text */
+        }
+
         /* Book Container */
         .book {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background: #f3e8ff;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* Page Styling */
         .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            transition: transform 1s;
+            width: 90%;
+            max-width: 800px;
             background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
             display: none;
         }
 
         .page.active {
             display: block;
-            z-index: 1;
         }
 
-        /* Your Original Styling */
+        /* Header Styling */
         header {
             text-align: center;
-            padding: 30px;
-            background: #9b59b6;
-            color: white;
+            margin-bottom: 30px;
         }
 
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: #6a2c91; /* Purple */
+        }
+
+        /* Button Styling */
         .love-button {
-            background: #6a2c91;
+            background: #6a2c91; /* Purple */
             color: white;
             padding: 15px 30px;
             border: none;
             border-radius: 25px;
-            margin: 10px;
+            font-size: 1.2em;
             cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+
+        .love-button:hover {
+            background: #8e44ad; /* Darker purple */
+        }
+
+        /* About Section */
+        .about ul {
+            list-style: none;
+            padding: 0;
         }
 
         .about li {
             font-size: 1.2em;
             margin: 15px 0;
-            list-style: none;
+            padding-left: 30px;
+            position: relative;
         }
 
-        .about li:before {
+        .about li::before {
             content: '💜';
-            margin-right: 10px;
+            position: absolute;
+            left: 0;
         }
 
+        /* Notes Section */
         .notes textarea {
             width: 100%;
             height: 100px;
-            margin: 10px 0;
             padding: 10px;
+            border: 2px solid #6a2c91;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 1em;
         }
 
-        /* Navigation Controls */
+        .saved-notes {
+            margin-top: 20px;
+        }
+
+        .saved-note {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Navigation Buttons */
         .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            width: 100%;
             text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Cover Page -->
     <div class="book">
+        <!-- Cover Page -->
         <div class="page active" id="cover">
             <header>
                 <h1>For My Beautiful Princess Khadijah</h1>
@@ -118,7 +154,7 @@
             <header>
                 <h2>All About You</h2>
             </header>
-            <div class="about" style="padding: 20px;">
+            <div class="about">
                 <ul>
                     <li><strong>Favorite Color:</strong> Purple</li>
                     <li><strong>Favorite Drink:</strong> Oreo Milkshake</li>
@@ -139,10 +175,10 @@
             <header>
                 <h2>Love Notes</h2>
             </header>
-            <div class="notes" style="padding: 20px;">
+            <div class="notes">
                 <textarea id="noteInput" placeholder="Write your note here..."></textarea>
                 <button class="love-button" onclick="addNote()">Add Note</button>
-                <div id="savedNotes" style="margin-top: 20px;"></div>
+                <div id="savedNotes" class="saved-notes"></div>
             </div>
             <div class="nav-buttons">
                 <button class="love-button" onclick="showPage(2)">Back</button>
@@ -183,9 +219,8 @@ function addNote() {
     
     if (input.value.trim()) {
         const noteDiv = document.createElement('div');
+        noteDiv.className = 'saved-note';
         noteDiv.textContent = input.value;
-        noteDiv.style.padding = "10px";
-        noteDiv.style.borderBottom = "1px solid #ddd";
         notesContainer.appendChild(noteDiv);
         input.value = '';
     }
