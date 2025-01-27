@@ -15,32 +15,41 @@
             cursor: url('heart-cursor.png'), auto; /* Custom cursor */
             scroll-behavior: smooth; /* Smooth scrolling */
             overflow: hidden; /* Prevent scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         /* Book Container */
         .book {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
-            perspective: 1500px; /* 3D effect */
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
+            overflow: hidden;
         }
 
         /* Page Styling */
         .page {
-            width: 50%;
-            height: 80%;
-            margin: auto;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 50px 20px;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
             position: absolute;
-            top: 10%;
-            left: 25%;
-            transform-style: preserve-3d;
-            transition: transform 1s ease-in-out;
-            backface-visibility: hidden; /* Hide the back of the page */
+            top: 0;
+            left: 0;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
         }
 
         /* Page Content */
@@ -76,9 +85,16 @@
             background-color: #8e44ad; /* Darker Purple */
         }
 
-        /* Hide Pages by Default */
-        .page:not(:first-child) {
-            display: none;
+        /* Floating Hearts Animation */
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 25px;
+            animation: float 5s linear infinite;
         }
     </style>
 </head>
@@ -86,7 +102,7 @@
     <!-- Book Container -->
     <div class="book">
         <!-- Page 1: Header -->
-        <div class="page" id="page1">
+        <div class="page active" id="page1">
             <header>
                 <h1>For My Beautiful Princess Khadijah</h1>
                 <p>The epitome of beauty and grace, unmatched in the entire world.</p>
@@ -152,11 +168,8 @@
             function createHeart() {
                 const heart = document.createElement('div');
                 heart.innerHTML = '💜';
-                heart.style.position = 'fixed';
-                heart.style.zIndex = 9999;
-                heart.style.fontSize = '25px';
+                heart.className = 'heart';
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
                 document.body.appendChild(heart);
                 
                 setTimeout(() => heart.remove(), 5000);
@@ -172,7 +185,7 @@
 
         function showPage(index) {
             pages.forEach((page, i) => {
-                page.style.display = i === index ? 'block' : 'none';
+                page.classList.toggle('active', i === index);
             });
         }
 
