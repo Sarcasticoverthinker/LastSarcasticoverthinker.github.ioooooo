@@ -530,3 +530,48 @@
         function addNote() {
             const noteInput = document.getElementById('noteInput');
             const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const note = noteInput.value.trim();
+
+            if (note) {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'saved-note';
+                noteElement.innerHTML = `
+                    ${note}
+                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+                `;
+                savedNotesContainer.appendChild(noteElement);
+                noteInput.value = '';
+                saveNotes();
+            }
+        }
+
+        function saveNotes() {
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        function loadNotes() {
+            const savedNotesContainer = document.getElementById('savedNotesContainer');
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.forEach(note => {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'saved-note';
+                noteElement.innerHTML = `
+                    ${note}
+                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
+                `;
+                savedNotesContainer.appendChild(noteElement);
+            });
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Initial Load
+        window.onload = loadNotes;
+    </script>
+</body>
+</html>
