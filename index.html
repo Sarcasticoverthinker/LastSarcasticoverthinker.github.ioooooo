@@ -33,7 +33,7 @@
         }
 
         body.dark-mode .button {
-            background-color: #8e44ad;
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
         }
 
         body.dark-mode .notes textarea {
@@ -88,7 +88,36 @@
             margin: 40px 0 20px;
         }
 
-        /* Improved Navigation Buttons */
+        /* Button Styles */
+        .button {
+            background: linear-gradient(135deg, #8A2BE2, #9400D3);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+            margin: 10px;
+            font-family: 'Playfair Display', serif;
+            width: 80%;
+            max-width: 600px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5);
+            background: linear-gradient(135deg, #9400D3, #8A2BE2);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        /* Navigation Buttons */
         .nav-buttons {
             position: fixed;
             bottom: 20px;
@@ -106,7 +135,7 @@
             padding: 12px 24px;
             border: none;
             border-radius: 15px;
-            background-color: #6a2c91;
+            background: linear-gradient(135deg, #8A2BE2, #9400D3);
             color: white;
             cursor: pointer;
             transition: all 0.3s;
@@ -115,12 +144,8 @@
         }
 
         .nav-buttons button:hover {
-            background-color: #8e44ad;
             transform: translateY(-2px);
-        }
-
-        .nav-buttons button:active {
-            transform: scale(0.95);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5);
         }
 
         /* Mobile Responsiveness */
@@ -134,6 +159,12 @@
             .page h2 {
                 font-size: 1.8em;
                 margin-top: 60px;
+            }
+
+            .button {
+                width: 90%;
+                font-size: 1em;
+                padding: 12px 20px;
             }
 
             .nav-buttons {
@@ -157,30 +188,32 @@
             padding: 10px;
             margin: 10px 0;
             font-size: 1em;
+            max-width: 600px;
+            display: block;
+            margin: 20px auto;
         }
 
         .notes button {
             padding: 10px 20px;
             border: none;
             border-radius: 10px;
-            background-color: #6a2c91;
+            background: linear-gradient(135deg, #8A2BE2, #9400D3);
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
-
-        .notes button:hover {
-            background-color: #8e44ad;
+            display: block;
+            margin: 0 auto;
         }
 
         .saved-notes {
-            margin-top: 20px;
+            margin: 20px auto;
             max-height: 150px;
             overflow-y: auto;
             padding: 10px;
-            border: 1px solid #6a2c91;
+            border: 1px solid #8A2BE2;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
         }
 
         .saved-note {
@@ -194,7 +227,7 @@
         .delete-btn {
             background: transparent;
             border: none;
-            color: #6a2c91;
+            color: #8A2BE2;
             margin-left: 10px;
             cursor: pointer;
             font-size: 1.2em;
@@ -221,19 +254,22 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            color: #6a2c91;
+            color: #8A2BE2;
             z-index: 1000;
         }
 
         body.dark-mode .dark-mode-toggle {
             color: #f3e8ff;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <!-- Book Container -->
     <div class="book">
-        <!-- Dark Mode Toggle -->
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
 
         <!-- Page 1: Header -->
@@ -248,7 +284,7 @@
         <div class="page" id="page2">
             <h2>Why You Are Amazing</h2>
             <section class="compliments">
-                <button class="button" onclick="changeCompliment()">Khadijah, you are the most beautiful girl in the world.</button>
+                <button class="button" onclick="changeCompliment()">Click for Compliments 💜</button>
             </section>
         </div>
 
@@ -256,7 +292,7 @@
         <div class="page" id="page3">
             <h2>Daily Affirmation</h2>
             <section class="affirmations">
-                <button class="button" onclick="changeAffirmation()">You are capable of achieving great things!</button>
+                <button class="button" onclick="changeAffirmation()">Click for Affirmations ✨</button>
             </section>
         </div>
 
@@ -284,21 +320,20 @@
         <div class="page" id="page5">
             <h2>Notes for Khadijah</h2>
             <div class="notes">
-                <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+                <textarea id="noteInput" placeholder="Write your sweet note here... 💌"></textarea>
                 <button onclick="addNote()">Add Note</button>
                 <div class="saved-notes" id="savedNotesContainer"></div>
             </div>
         </div>
 
-        <!-- Navigation Buttons -->
         <div class="nav-buttons">
             <button id="prevBtn" onclick="prevPage()">Previous</button>
             <button id="nextBtn" onclick="nextPage()">Next</button>
         </div>
     </div>
 
-    <!-- Floating Hearts Animation -->
     <script>
+        // Floating Hearts
         document.addEventListener('DOMContentLoaded', function() {
             function createHeart() {
                 const heart = document.createElement('div');
@@ -311,10 +346,8 @@
             }
             setInterval(createHeart, 300);
         });
-    </script>
 
-    <!-- Interactive Features -->
-    <script>
+        // Page Navigation
         const pages = document.querySelectorAll('.page');
         let currentPage = 0;
 
@@ -336,6 +369,50 @@
                 currentPage--;
                 showPage(currentPage);
             }
+        }
+
+        // Compliments & Affirmations
+        const compliments = [
+            "Your smile lights up my world like nothing else 🌟",
+            "Your intelligence and wit leave me in awe every day 🧠",
+            "You have the most captivating eyes I've ever seen 👀",
+            "Your kindness touches everyone around you 💖",
+            "The way you carry yourself with grace is inspiring 🦢",
+            "Your laughter is my favorite sound in the universe 🎶",
+            "You make everything better just by being present 🌈",
+            "Your strength and resilience are truly admirable 💪",
+            "Your sense of style is always on point and stunning 👗",
+            "You have the perfect balance of sweetness and sass 😘"
+        ];
+
+        const affirmations = [
+            "You are worthy of all the love and happiness in the world 🌍",
+            "Your potential to achieve greatness is limitless 🚀",
+            "Every challenge you face makes you stronger and wiser 🧗♀️",
+            "You radiate confidence and positive energy ☀️",
+            "Your dreams are valid and within your reach 🌠",
+            "You have the power to create the life you desire ✨",
+            "Your presence makes the world a better place 🌸",
+            "You are enough, just as you are in this moment 💯",
+            "Every day you're growing into an even more amazing version of yourself 🌱",
+            "Your compassion and empathy change lives for the better 🤝"
+        ];
+
+        let complimentIndex = 0;
+        let affirmationIndex = 0;
+
+        function changeCompliment() {
+            const button = document.querySelector('.compliments .button');
+            complimentIndex = (complimentIndex + 1) % compliments.length;
+            button.innerHTML = `Khadijah, ${compliments[complimentIndex]}`;
+            button.style.animation = 'fadeIn 0.5s';
+        }
+
+        function changeAffirmation() {
+            const button = document.querySelector('.affirmations .button');
+            affirmationIndex = (affirmationIndex + 1) % affirmations.length;
+            button.innerHTML = affirmations[affirmationIndex];
+            button.style.animation = 'fadeIn 0.5s';
         }
 
         // Notes Functionality
@@ -382,7 +459,7 @@
             document.body.classList.toggle('dark-mode');
         }
 
-        // Load notes when the page is loaded
+        // Initial Load
         window.onload = loadNotes;
     </script>
 </body>
