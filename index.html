@@ -12,110 +12,49 @@
             font-family: 'Poppins', sans-serif;
             background: #f3e8ff;
             color: #4b0082;
-            cursor: url('heart-cursor.png'), auto;
             scroll-behavior: smooth;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                        color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
         }
 
-        /* Dark Mode Styles */
-        body.dark-mode {
-            background: #1a1a1a;
-            color: #f3e8ff;
+        .book {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            position: relative;
         }
 
-        /* ... (previous dark mode styles remain) ... */
-
-        /* Animated Page Transitions */
         .page {
-            transform: scale(0.95);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
             opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .page.active {
-            transform: scale(1);
+            display: block;
             opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Progress Indicator */
-        .page-indicator {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            margin-bottom: 20px;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #d8bfd8;
-            transition: all 0.3s;
-        }
-
-        .dot.active {
-            background: #8A2BE2;
-            transform: scale(1.3);
-        }
-
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #8A2BE2;
-            border-radius: 4px;
-        }
-
-        body.dark-mode ::-webkit-scrollbar-thumb {
-            background: #6a1b9a;
-        }
-
-        /* Error State */
-        .error {
-            border: 2px solid #ff4444 !important;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        /* Back to Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 120px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #8A2BE2;
-            color: white;
-            border: none;
-            cursor: pointer;
-            opacity: 0;
-            transition: all 0.3s;
-            font-size: 1.5em;
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 15px 0;
         }
 
         /* Loading Screen */
@@ -144,7 +83,29 @@
             50% { transform: scale(1.2); }
         }
 
-        /* ... (previous styles remain) ... */
+        /* Navigation Buttons */
+        .nav-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: #8A2BE2;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        button:hover {
+            background: #6a1b9a;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -155,19 +116,66 @@
     </div>
 
     <div class="book">
-        <!-- ... (previous content remains) ... -->
-
-        <!-- Progress Indicator -->
-        <div class="page-indicator">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+        <!-- Page 1 -->
+        <div class="page active">
+            <h1>My Dearest Khadijah</h1>
+            <p>From the moment I saw you, my heart knew it found its missing piece. Your smile lights up my world, and your kindness touches my soul.</p>
+            <div class="nav-buttons">
+                <button onclick="nextPage()">Next ➔</button>
+            </div>
         </div>
 
-        <!-- Back to Top Button -->
-        <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">↑</button>
+        <!-- Page 2 -->
+        <div class="page">
+            <h1>Why You're Amazing</h1>
+            <p>🌟 Your compassionate heart<br>
+               💫 Your brilliant mind<br>
+               🌹 Your inner strength<br>
+               ✨ Your beautiful spirit</p>
+            <div class="nav-buttons">
+                <button onclick="prevPage()">⬅ Back</button>
+                <button onclick="nextPage()">Next ➔</button>
+            </div>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="page">
+            <h1>My Promise to You</h1>
+            <p>I vow to always:<br>
+               - Cherish and respect you<br>
+               - Support your dreams<br>
+               - Be your safe haven<br>
+               - Love you endlessly</p>
+            <div class="nav-buttons">
+                <button onclick="prevPage()">⬅ Back</button>
+                <button onclick="nextPage()">Next ➔</button>
+            </div>
+        </div>
+
+        <!-- Page 4 -->
+        <div class="page">
+            <h1>Our Memories</h1>
+            <p>📸 That magical first date<br>
+               🌙 Our late-night conversations<br>
+               🤝 The way we understand each other<br>
+               💞 Every moment together</p>
+            <div class="nav-buttons">
+                <button onclick="prevPage()">⬅ Back</button>
+                <button onclick="nextPage()">Next ➔</button>
+            </div>
+        </div>
+
+        <!-- Page 5 -->
+        <div class="page">
+            <h1>Forever Yours</h1>
+            <p>You are my always and forever.<br>
+               No matter what life brings,<br>
+               I'll be by your side.<br>
+               I love you to the moon and back.</p>
+            <div class="nav-buttons">
+                <button onclick="prevPage()">⬅ Back</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -179,20 +187,19 @@
             }, 500);
         });
 
-        // Enhanced Page Navigation with Progress Indicator
-        const dots = document.querySelectorAll('.dot');
-        function updateProgress() {
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentPage);
-            });
+        // Page Navigation
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+
+        function showPage(pageIndex) {
+            pages.forEach(page => page.classList.remove('active'));
+            pages[pageIndex].classList.add('active');
         }
 
         function nextPage() {
             if (currentPage < pages.length - 1) {
                 currentPage++;
                 showPage(currentPage);
-                updateProgress();
-                showConfetti();
             }
         }
 
@@ -200,80 +207,14 @@
             if (currentPage > 0) {
                 currentPage--;
                 showPage(currentPage);
-                updateProgress();
             }
         }
 
-        // Input Validation & Sanitization
-        function sanitizeInput(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function addNote() {
-            const noteInput = document.getElementById('noteInput');
-            const cleanNote = sanitizeInput(noteInput.value.trim());
-            
-            if (cleanNote.length < 3) {
-                noteInput.classList.add('error');
-                setTimeout(() => noteInput.classList.remove('error'), 1000);
-                return;
-            }
-
-            const noteElement = document.createElement('div');
-            noteElement.className = 'saved-note';
-            noteElement.innerHTML = `
-                <span class="timestamp">${new Date().toLocaleString()}</span>
-                ${cleanNote}
-                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()" aria-label="Delete note">×</button>
-            `;
-            document.getElementById('savedNotesContainer').appendChild(noteElement);
-            noteInput.value = '';
-            saveNotes();
-            showConfetti();
-        }
-
-        // Confetti Effect
-        function showConfetti() {
-            const count = 100;
-            for (let i = 0; i < count; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'heart';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animation = `float ${3 + Math.random() * 2}s linear`;
-                confetti.innerHTML = '💜';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        }
-
-        // Back to Top Button
-        window.addEventListener('scroll', () => {
-            const button = document.querySelector('.back-to-top');
-            button.classList.toggle('visible', window.scrollY > 200);
-        });
-
-        // Hidden Surprise
-        let konamiCode = [];
+        // Add keyboard navigation
         document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.key.toLowerCase());
-            konamiCode = konamiCode.slice(-4);
-            if (konamiCode.join('') === 'khaj') {
-                showConfetti();
-                alert('You will always be my forever princess 👑');
-                konamiCode = [];
-            }
+            if (e.key === 'ArrowRight') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
         });
-
-        // Accessibility Features
-        document.querySelectorAll('button').forEach(btn => {
-            if (!btn.getAttribute('aria-label')) {
-                btn.setAttribute('aria-label', btn.textContent);
-            }
-        });
-
-        // ... (rest of previous JavaScript remains) ...
     </script>
 </body>
 </html>
