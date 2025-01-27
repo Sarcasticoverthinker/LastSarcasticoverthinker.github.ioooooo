@@ -19,7 +19,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: background 0.5s, color 0.5s;
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Dark Mode Styles */
@@ -54,7 +54,7 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
-            transition: background 0.5s;
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body.dark-mode .book {
@@ -266,9 +266,125 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f3e8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease-out;
+        }
+
+        .loading-screen.dark-mode {
+            background: #1a1a1a;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            font-size: 50px;
+            color: #8A2BE2;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Page Indicator */
+        .page-indicator {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2em;
+            color: #8A2BE2;
+            z-index: 1000;
+        }
+
+        body.dark-mode .page-indicator {
+            color: #f3e8ff;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 120px;
+            right: 20px;
+            background: linear-gradient(135deg, #8A2BE2, #9400D3);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: none;
+            transition: opacity 0.3s;
+        }
+
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #9400D3, #8A2BE2);
+        }
+
+        /* Confetti Effect */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff0;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: confetti-fall 2s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Hidden Surprise */
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            z-index: 10000;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader">💜</div>
+    </div>
+
+    <!-- Book Container -->
     <div class="book">
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
 
@@ -326,35 +442,43 @@
             </div>
         </div>
 
+        <!-- Page Indicator -->
+        <div class="page-indicator" id="pageIndicator">Page 1 of 5</div>
+
+        <!-- Navigation Buttons -->
         <div class="nav-buttons">
             <button id="prevBtn" onclick="prevPage()">Previous</button>
             <button id="nextBtn" onclick="nextPage()">Next</button>
         </div>
+
+        <!-- Back to Top Button -->
+        <button class="back-to-top" onclick="scrollToTop()" id="backToTopBtn">↑</button>
+
+        <!-- Confetti Effect -->
+        <div class="confetti" id="confetti"></div>
+
+        <!-- Hidden Surprise -->
+        <div class="secret-message" id="secretMessage">You found the secret message! 💜</div>
     </div>
 
     <script>
-        // Floating Hearts
-        document.addEventListener('DOMContentLoaded', function() {
-            function createHeart() {
-                const heart = document.createElement('div');
-                heart.innerHTML = '💜';
-                heart.className = 'heart';
-                heart.style.left = Math.random() * 100 + 'vw';
-                document.body.appendChild(heart);
-                
-                setTimeout(() => heart.remove(), 5000);
-            }
-            setInterval(createHeart, 300);
-        });
+        // Loading Screen
+        const loadingScreen = document.getElementById('loadingScreen');
+        setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+        }, 3000);
 
         // Page Navigation
         const pages = document.querySelectorAll('.page');
+        const pageIndicator = document.getElementById('pageIndicator');
         let currentPage = 0;
 
         function showPage(index) {
             pages.forEach((page, i) => {
                 page.classList.toggle('active', i === index);
             });
+            pageIndicator.textContent = `Page ${index + 1} of ${pages.length}`;
+            triggerConfetti();
         }
 
         function nextPage() {
@@ -391,76 +515,4 @@
             "Every challenge you face makes you stronger and wiser 🧗♀️",
             "You radiate confidence and positive energy ☀️",
             "Your dreams are valid and within your reach 🌠",
-            "You have the power to create the life you desire ✨",
-            "Your presence makes the world a better place 🌸",
-            "You are enough, just as you are in this moment 💯",
-            "Every day you're growing into an even more amazing version of yourself 🌱",
-            "Your compassion and empathy change lives for the better 🤝"
-        ];
-
-        let complimentIndex = 0;
-        let affirmationIndex = 0;
-
-        function changeCompliment() {
-            const button = document.querySelector('.compliments .button');
-            complimentIndex = (complimentIndex + 1) % compliments.length;
-            button.innerHTML = `Khadijah, ${compliments[complimentIndex]}`;
-            button.style.animation = 'fadeIn 0.5s';
-        }
-
-        function changeAffirmation() {
-            const button = document.querySelector('.affirmations .button');
-            affirmationIndex = (affirmationIndex + 1) % affirmations.length;
-            button.innerHTML = affirmations[affirmationIndex];
-            button.style.animation = 'fadeIn 0.5s';
-        }
-
-        // Notes Functionality
-        function addNote() {
-            const noteInput = document.getElementById('noteInput');
-            const savedNotesContainer = document.getElementById('savedNotesContainer');
-            const note = noteInput.value.trim();
-
-            if (note) {
-                const noteElement = document.createElement('div');
-                noteElement.className = 'saved-note';
-                noteElement.innerHTML = `
-                    ${note}
-                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-                `;
-                savedNotesContainer.appendChild(noteElement);
-                noteInput.value = '';
-                saveNotes();
-            }
-        }
-
-        function saveNotes() {
-            const savedNotesContainer = document.getElementById('savedNotesContainer');
-            const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
-            localStorage.setItem('notes', JSON.stringify(notes));
-        }
-
-        function loadNotes() {
-            const savedNotesContainer = document.getElementById('savedNotesContainer');
-            const notes = JSON.parse(localStorage.getItem('notes')) || [];
-            notes.forEach(note => {
-                const noteElement = document.createElement('div');
-                noteElement.className = 'saved-note';
-                noteElement.innerHTML = `
-                    ${note}
-                    <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-                `;
-                savedNotesContainer.appendChild(noteElement);
-            });
-        }
-
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
-
-        // Initial Load
-        window.onload = loadNotes;
-    </script>
-</body>
-</html>
+            "You have the power to create the life you desire
