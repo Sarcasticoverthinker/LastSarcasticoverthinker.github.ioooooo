@@ -10,11 +10,11 @@
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: #f3e8ff; /* Light purple background */
-            color: #4b0082; /* Dark purple text */
-            cursor: url('heart-cursor.png'), auto; /* Custom cursor */
-            scroll-behavior: smooth; /* Smooth scrolling */
-            overflow: hidden; /* Prevent scrolling */
+            background: #f3e8ff;
+            color: #4b0082;
+            cursor: url('heart-cursor.png'), auto;
+            scroll-behavior: smooth;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,8 +47,8 @@
 
         /* Book Container */
         .book {
-            width: 100%;
-            height: 100vh;
+            width: 95%;
+            height: 95vh;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -83,34 +83,69 @@
         /* Page Content */
         .page h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.5em; /* Smaller font for mobile */
+            font-size: 2em;
             text-align: center;
-            margin-bottom: 20px;
+            margin: 40px 0 20px;
         }
 
-        /* Navigation Buttons */
+        /* Improved Navigation Buttons */
         .nav-buttons {
-            position: absolute;
-            bottom: 10px;
+            position: fixed;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            z-index: 1000;
+            min-width: 220px;
+            justify-content: center;
         }
 
         .nav-buttons button {
-            font-size: 1.2em; /* Smaller buttons for mobile */
-            padding: 8px 16px;
+            font-size: 1.5em;
+            padding: 12px 24px;
             border: none;
-            border-radius: 10px;
-            background-color: #6a2c91; /* Purple */
+            border-radius: 15px;
+            background-color: #6a2c91;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 100px;
         }
 
         .nav-buttons button:hover {
-            background-color: #8e44ad; /* Darker Purple */
+            background-color: #8e44ad;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons button:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 480px) {
+            .book {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .page h2 {
+                font-size: 1.8em;
+                margin-top: 60px;
+            }
+
+            .nav-buttons {
+                bottom: 10px;
+                gap: 10px;
+            }
+
+            .nav-buttons button {
+                font-size: 1.2em;
+                padding: 10px 20px;
+                min-width: 80px;
+            }
         }
 
         /* Notes Section */
@@ -128,14 +163,14 @@
             padding: 10px 20px;
             border: none;
             border-radius: 10px;
-            background-color: #6a2c91; /* Purple */
+            background-color: #6a2c91;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         .notes button:hover {
-            background-color: #8e44ad; /* Darker Purple */
+            background-color: #8e44ad;
         }
 
         .saved-notes {
@@ -143,7 +178,7 @@
             max-height: 150px;
             overflow-y: auto;
             padding: 10px;
-            border: 1px solid #6a2c91; /* Purple border */
+            border: 1px solid #6a2c91;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.8);
         }
@@ -173,20 +208,21 @@
 
         .heart {
             position: absolute;
-            font-size: 20px; /* Smaller hearts for mobile */
+            font-size: 20px;
             animation: float 5s linear infinite;
         }
 
         /* Dark Mode Toggle */
         .dark-mode-toggle {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5em;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8em;
             background: transparent;
             border: none;
             cursor: pointer;
             color: #6a2c91;
+            z-index: 1000;
         }
 
         body.dark-mode .dark-mode-toggle {
@@ -316,15 +352,15 @@
                     <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
                 `;
                 savedNotesContainer.appendChild(noteElement);
-                noteInput.value = ''; // Clear input
-                saveNotes(); // Save notes to local storage
+                noteInput.value = '';
+                saveNotes();
             }
         }
 
         function saveNotes() {
             const savedNotesContainer = document.getElementById('savedNotesContainer');
             const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
-            localStorage.setItem('notes', JSON.stringify(notes)); // Save notes to local storage
+            localStorage.setItem('notes', JSON.stringify(notes));
         }
 
         function loadNotes() {
@@ -345,16 +381,6 @@
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
         }
-
-        // Inside Joke Easter Egg
-        let pickleCount = 0;
-        document.querySelector('footer p').addEventListener('click', function() {
-            pickleCount++;
-            if (pickleCount === 3) {
-                alert("Okay fine, you're my favorite sour pickle too! 🥒💜");
-                pickleCount = 0;
-            }
-        });
 
         // Load notes when the page is loaded
         window.onload = loadNotes;
