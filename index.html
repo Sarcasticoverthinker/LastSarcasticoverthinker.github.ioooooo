@@ -265,3 +265,29 @@
 
     window.onload = loadNotes; // Load notes when the page is loaded
 </script>
+<script>
+// Floating Hearts Animation
+document.addEventListener('DOMContentLoaded', function() {
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.innerHTML = '💜';
+        heart.style.position = 'fixed';
+        heart.style.zIndex = 9999;
+        heart.style.fontSize = '25px';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+});
+
+// Add to CSS:
+</script>
+<style>
+@keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+</style>
