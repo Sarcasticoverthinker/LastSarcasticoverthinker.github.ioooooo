@@ -6,379 +6,201 @@
     <title>For My Beautiful Princess Khadijah</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #f3e8ff; /* Light purple background */
-            color: #4b0082; /* Dark purple text */
-            cursor: url('heart-cursor.png'), auto; /* Custom cursor */
-            scroll-behavior: smooth; /* Smooth scrolling */
-        }
-        header {
+        /* Book Container */
+        .book {
+            position: relative;
+            width: 100vw;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: #9b59b6; /* Purple */
-            color: #fff;
+            perspective: 2500px;
+            background: #f9f4fb;
+            overflow: hidden;
         }
-        header h1 {
-            font-family: 'Dancing Script', cursive; /* Romantic font for the header */
-            font-size: 4em;
-            margin: 0;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+
+        /* Page Styling */
+        .page {
+            position: absolute;
+            width: 70%;
+            height: 80%;
+            max-width: 800px;
+            left: 50%;
+            top: 50%;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 40px;
+            box-sizing: border-box;
         }
-        header p {
-            font-family: 'Playfair Display', serif; /* Romantic font for the paragraph */
-            font-size: 1.5em;
-            margin-top: 10px;
-            color: #e5e1f4; /* Light purple */
+
+        /* Page Content */
+        .page-content {
+            position: relative;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 20px;
         }
-        .compliments, .affirmations {
-            margin: 50px auto;
-            text-align: center;
+
+        /* Page Navigation Controls */
+        .book-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
         }
-        .button {
+
+        .nav-button {
             font-size: 1.5em;
             padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            background-color: #6a2c91; /* Purple */
+            margin: 0 10px;
+            background: #6a2c91;
             color: white;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
         }
-        .button:hover {
-            background-color: #8e44ad; /* Darker Purple */
+
+        .nav-button:hover {
+            background: #8e44ad;
+            transform: scale(1.05);
         }
-        .about {
-            margin: 50px auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            max-width: 800px;
-            text-align: left;
-        }
-        .about h2 {
-            font-size: 2.5em;
-            color: #6a2c91; /* Purple */
-            text-align: center;
-        }
-        .about ul {
-            list-style: none;
-            padding: 0;
-        }
-        .about li {
-            font-size: 1.4em;
-            margin: 15px 0;
-            position: relative;
-            padding-left: 35px;
-        }
-        .about li:before {
-            content: '💜';
+
+        /* Page Curl Effect */
+        .page::after {
+            content: '';
             position: absolute;
-            left: 0;
-            font-size: 1.2em; /* Smaller hearts */
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-        .notes {
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            max-width: 800px;
-        }
-        .notes h2 {
-            font-size: 2.5em;
-            color: #6a2c91; /* Purple */
-            text-align: center;
-        }
-        .notes textarea {
-            width: 100%;
-            height: 100px;
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 1.2em;
-        }
-        .notes button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            background-color: #6a2c91; /* Purple */
-            color: white;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 100%;
+            background: linear-gradient(to left, rgba(0,0,0,0.1) 0%, transparent 100%);
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .notes button:hover {
-            background-color: #8e44ad; /* Darker Purple */
-        }
-        .saved-notes {
-            margin-top: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 10px;
-            border: 1px solid #6a2c91; /* Purple border */
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.8);
-        }
-        .saved-note {
-            padding: 5px 0;
-            border-bottom: 1px solid #dcdcdc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .delete-btn {
-            background: transparent;
-            border: none;
-            color: #6a2c91;
-            margin-left: 10px;
-            cursor: pointer;
-            font-size: 1.2em;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 1.2em;
-            color: #4b0082; /* Dark purple */
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5em;
-                padding: 0 20px;
-            }
-            .button {
-                font-size: 1.2em;
-                padding: 12px 25px;
-            }
-            .about, .notes {
-                margin: 30px 15px;
-                padding: 20px;
-            }
         }
 
-        /* Dark Mode Toggle */
-        .dark-mode {
-            background: #1a1a1a;
-            color: #f3e8ff;
+        /* Your Original Content Styling */
+        .romantic-header {
+            text-align: center;
+            margin-bottom: 40px;
         }
-        .dark-mode header {
-            background: #4b0082;
-        }
-        .dark-mode .button {
-            background-color: #8e44ad;
-        }
-        .dark-mode .notes textarea {
-            background: #333;
-            color: #fff;
-        }
-        .dark-mode .saved-notes {
-            background: #444;
-        }
-
-        /* Book-like Experience */
-        .page {
-            padding: 50px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-        .page h2 {
+        .romantic-header h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3em;
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 3.5em;
+            color: #6a2c91;
         }
+        .love-button {
+            background: #ff69b4;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        /* ... (keep your existing styles for notes/compliments) ... */
     </style>
 </head>
 <body>
-<header>
-    <h1>For My Beautiful Princess Khadijah</h1>
-    <p>The epitome of beauty and grace, unmatched in the entire world.</p>
-</header>
+    <div class="book">
+        <!-- Cover Page -->
+        <div class="page active" id="cover">
+            <div class="page-content">
+                <div class="romantic-header">
+                    <h1>Our Love Story</h1>
+                    <p>A Digital Book for My Queen Khadijah</p>
+                    <img src="heart.svg" alt="Love" style="width: 100px; margin: 20px 0;">
+                </div>
+                <div style="text-align: center;">
+                    <button class="love-button" onclick="turnPage(1)">Open Book</button>
+                </div>
+            </div>
+        </div>
 
-<!-- Page 1: Compliments -->
-<div class="page">
-    <h2>Why You Are Amazing</h2>
-    <section class="compliments">
-        <button class="button" onclick="changeCompliment()">Khadijah, you are the most beautiful girl in the world.</button>
-    </section>
-</div>
+        <!-- Page 1: Compliments -->
+        <div class="page" id="page1">
+            <div class="page-content">
+                <div class="romantic-header">
+                    <h2>Why You're Amazing</h2>
+                </div>
+                <div class="compliments">
+                    <button class="love-button" onclick="changeCompliment()">Khadijah, you are the most beautiful girl in the world.</button>
+                </div>
+                <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">
+                    <button class="nav-button" onclick="turnPage(-1)">Back</button>
+                    <button class="nav-button" onclick="turnPage(1)">Next</button>
+                </div>
+            </div>
+        </div>
 
-<!-- Page 2: Affirmations -->
-<div class="page">
-    <h2>Daily Affirmation</h2>
-    <section class="affirmations">
-        <button class="button" onclick="changeAffirmation()">You are capable of achieving great things!</button>
-    </section>
-</div>
+        <!-- Page 2: Affirmations -->
+        <div class="page" id="page2">
+            <div class="page-content">
+                <div class="romantic-header">
+                    <h2>Daily Affirmations</h2>
+                </div>
+                <div class="affirmations">
+                    <button class="love-button" onclick="changeAffirmation()">You are capable of great things!</button>
+                </div>
+                <!-- Add navigation buttons -->
+            </div>
+        </div>
 
-<!-- Page 3: Fun Facts -->
-<div class="page">
-    <h2>Fun Facts About You</h2>
-    <div class="about">
-        <ul>
-            <li><strong>Favorite Color:</strong> Purple</li>
-            <li><strong>Favorite Drink:</strong> Oreo Milkshake</li>
-            <li><strong>Favorite Food:</strong> Butter Chicken</li>
-            <li><strong>Loves:</strong> Laughing with friends and loved ones</li>
-            <li><strong>Enjoys:</strong> Sorting things out, bringing order to chaos</li>
-            <li><strong>Adorable Relationship:</strong> Loves her baby brother, despite his attitude</li>
-            <li><strong>Work Habit:</strong> Loves talking to someone while working</li>
-            <li><strong>Favorite Sounds:</strong> Cherishes the soothing sounds of babies</li>
-            <li><strong>Grammar Enthusiast:</strong> A proud grammar Nazi, always correcting</li>
-            <li><strong>Chatterbox:</strong> A true yapper at heart, always ready to chat</li>
-            <li><strong>Makeup Lover:</strong> Especially enjoys lip gloss and eyeliner</li>
-        </ul>
+        <!-- Page 3: Notes Section -->
+        <div class="page" id="page3">
+            <div class="page-content">
+                <div class="romantic-header">
+                    <h2>Love Notes</h2>
+                </div>
+                <div class="notes">
+                    <textarea id="noteInput" placeholder="Write your love note here..."></textarea>
+                    <button class="love-button" onclick="addNote()">Add Note</button>
+                    <div class="saved-notes" id="savedNotesContainer"></div>
+                </div>
+                <!-- Add navigation buttons -->
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- Page 4: Notes -->
-<div class="page">
-    <h2>Notes for Khadijah</h2>
-    <div class="notes">
-        <textarea id="noteInput" placeholder="Write your note here..."></textarea>
-        <button onclick="addNote()">Add Note</button>
-        <div class="saved-notes" id="savedNotesContainer"></div>
-    </div>
-</div>
-
-<!-- Footer -->
-<footer>
-    <p>Always thinking of you, your fan</p>
-    <p> Y <33</p>
-</footer>
-
-<!-- Floating Hearts Animation -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '💜';
-            heart.style.position = 'fixed';
-            heart.style.zIndex = 9999;
-            heart.style.fontSize = '25px';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
-            document.body.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 5000);
-        }
-        setInterval(createHeart, 300);
-    });
-</script>
+// Page Navigation System
+let currentPage = 0;
+const pages = document.querySelectorAll('.page');
 
-<!-- Interactive Features -->
-<script>
-    const compliments = [
-        "Khadijah, you are the most beautiful girl in the world.",
-        "In my eyes, you shine as the most stunning girl.",
-        "I truly enjoy every moment we spend talking Khadijah.",
-        "You're not just beautiful on the outside; your soul is radiant.",
-        "I miss you the moment our conversation ends.",
-        "Khadijah, your kindness and warmth is rare.",
-        "Every time I see you, my heart skips a beat.",
-        "You are wonderful!!",
-        "You are an annoying cow as well 🙄🙄🙄.",
-        "and sour pickle as well 🙄🙄🙄.",
-        "Moti Moti Moti 🙄🙄🙄."
-    ];
+function turnPage(direction) {
+    const newPage = currentPage + direction;
+    if(newPage < 0 || newPage >= pages.length) return;
     
-    const affirmations = [
-        "You are capable of achieving great things!",
-        "You radiate positivity and light.",
-        "You are worthy of love and respect.",
-        "You are stronger than you think.",
-        "Every day is a fresh start.",
-        "You have the power to create change.",
-        "Your potential is limitless.",
-        "You are loved and cherished.",
-        "You bring joy to those around you."
-    ];
-    
-    let currentComplimentIndex = 0;
-    let currentAffirmationIndex = 0;
+    pages[currentPage].classList.remove('active');
+    pages[newPage].classList.add('active');
+    currentPage = newPage;
+}
 
-    function changeCompliment() {
-        const button = document.querySelector('.compliments .button');
-        currentComplimentIndex = (currentComplimentIndex + 1) % compliments.length; // Cycle through compliments
-        button.innerText = compliments[currentComplimentIndex]; // Change text of the button
-    }
+// Touch Swipe Detection
+let touchStartX = 0;
+document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+});
+document.addEventListener('touchend', e => {
+    const touchEndX = e.changedTouches[0].clientX;
+    if(touchStartX - touchEndX > 50) turnPage(1);
+    if(touchStartX - touchEndX < -50) turnPage(-1);
+});
 
-    function changeAffirmation() {
-        const button = document.querySelector('.affirmations .button');
-        currentAffirmationIndex = (currentAffirmationIndex + 1) % affirmations.length; // Cycle through affirmations
-        button.innerText = affirmations[currentAffirmationIndex]; // Change text of the button
-    }
+// Keyboard Navigation
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight') turnPage(1);
+    if(e.key === 'ArrowLeft') turnPage(-1);
+});
 
-    function addNote() {
-        const noteInput = document.getElementById('noteInput');
-        const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const note = noteInput.value.trim();
+// Your Original Features
+const compliments = [/* your compliments array */];
+const affirmations = [/* your affirmations array */];
 
-        if (note) {
-            const noteElement = document.createElement('div');
-            noteElement.className = 'saved-note';
-            noteElement.innerHTML = `
-                ${note}
-                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-            `;
-            savedNotesContainer.appendChild(noteElement);
-            noteInput.value = ''; // Clear input
-            saveNotes(); // Save notes to local storage
-        }
-    }
-
-    function saveNotes() {
-        const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const notes = Array.from(savedNotesContainer.children).map(note => note.textContent.replace('×', '').trim());
-        localStorage.setItem('notes', JSON.stringify(notes)); // Save notes to local storage
-    }
-
-    function loadNotes() {
-        const savedNotesContainer = document.getElementById('savedNotesContainer');
-        const notes = JSON.parse(localStorage.getItem('notes')) || [];
-        notes.forEach(note => {
-            const noteElement = document.createElement('div');
-            noteElement.className = 'saved-note';
-            noteElement.innerHTML = `
-                ${note}
-                <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">×</button>
-            `;
-            savedNotesContainer.appendChild(noteElement);
-        });
-    }
-
-    // Inside Joke Easter Egg
-    let pickleCount = 0;
-    document.querySelector('footer p').addEventListener('click', function() {
-        pickleCount++;
-        if (pickleCount === 3) {
-            alert("Okay fine, you're my favorite sour pickle too! 🥒💜");
-            pickleCount = 0;
-        }
-    });
-
-    window.onload = loadNotes; // Load notes when the page is loaded
+function changeCompliment() { /* your function */ }
+function changeAffirmation() { /* your function */ }
+function addNote() { /* your note function */ }
+// ... include all your original JavaScript ...
 </script>
 </body>
 </html>
