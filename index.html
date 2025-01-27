@@ -6,11 +6,14 @@
     <title>For My Beautiful Princess Khadijah</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* General Styles */
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
             background: #f3e8ff; /* Light purple background */
             color: #4b0082; /* Dark purple text */
+            cursor: url('heart-cursor.png'), auto; /* Custom cursor */
+            scroll-behavior: smooth; /* Smooth scrolling */
         }
         header {
             height: 100vh;
@@ -170,6 +173,41 @@
                 padding: 20px;
             }
         }
+
+        /* Dark Mode Toggle */
+        .dark-mode {
+            background: #1a1a1a;
+            color: #f3e8ff;
+        }
+        .dark-mode header {
+            background: #4b0082;
+        }
+        .dark-mode .button {
+            background-color: #8e44ad;
+        }
+        .dark-mode .notes textarea {
+            background: #333;
+            color: #fff;
+        }
+        .dark-mode .saved-notes {
+            background: #444;
+        }
+
+        /* Book-like Experience */
+        .page {
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .page h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -178,46 +216,78 @@
     <p>The epitome of beauty and grace, unmatched in the entire world.</p>
 </header>
 
-<section class="compliments">
-    <h2>Why You Are Amazing:</h2>
-    <button class="button" onclick="changeCompliment()">Khadijah, you are the most beautiful girl in the world.</button>
-</section>
-
-<section class="affirmations">
-    <h2>Daily Affirmation:</h2>
-    <button class="button" onclick="changeAffirmation()">You are capable of achieving great things!</button>
-</section>
-
-<div class="about">
-    <h2>Fun Facts About You:</h2>
-    <p>Here are some delightful insights into your wonderful self:</p>
-    <ul>
-        <li><strong>Favorite Color:</strong> Purple</li>
-        <li><strong>Favorite Drink:</strong> Oreo Milkshake</li>
-        <li><strong>Favorite Food:</strong> Butter Chicken</li>
-        <li><strong>Loves:</strong> Laughing with friends and loved ones</li>
-        <li><strong>Enjoys:</strong> Sorting things out, bringing order to chaos</li>
-        <li><strong>Adorable Relationship:</strong> Loves her baby brother, despite his attitude</li>
-        <li><strong>Work Habit:</strong> Loves talking to someone while working</li>
-        <li><strong>Favorite Sounds:</strong> Cherishes the soothing sounds of babies</li>
-        <li><strong>Grammar Enthusiast:</strong> A proud grammar Nazi, always correcting</li>
-        <li><strong>Chatterbox:</strong> A true yapper at heart, always ready to chat</li>
-        <li><strong>Makeup Lover:</strong> Especially enjoys lip gloss and eyeliner</li>
-    </ul>
+<!-- Page 1: Compliments -->
+<div class="page">
+    <h2>Why You Are Amazing</h2>
+    <section class="compliments">
+        <button class="button" onclick="changeCompliment()">Khadijah, you are the most beautiful girl in the world.</button>
+    </section>
 </div>
 
-<div class="notes">
+<!-- Page 2: Affirmations -->
+<div class="page">
+    <h2>Daily Affirmation</h2>
+    <section class="affirmations">
+        <button class="button" onclick="changeAffirmation()">You are capable of achieving great things!</button>
+    </section>
+</div>
+
+<!-- Page 3: Fun Facts -->
+<div class="page">
+    <h2>Fun Facts About You</h2>
+    <div class="about">
+        <ul>
+            <li><strong>Favorite Color:</strong> Purple</li>
+            <li><strong>Favorite Drink:</strong> Oreo Milkshake</li>
+            <li><strong>Favorite Food:</strong> Butter Chicken</li>
+            <li><strong>Loves:</strong> Laughing with friends and loved ones</li>
+            <li><strong>Enjoys:</strong> Sorting things out, bringing order to chaos</li>
+            <li><strong>Adorable Relationship:</strong> Loves her baby brother, despite his attitude</li>
+            <li><strong>Work Habit:</strong> Loves talking to someone while working</li>
+            <li><strong>Favorite Sounds:</strong> Cherishes the soothing sounds of babies</li>
+            <li><strong>Grammar Enthusiast:</strong> A proud grammar Nazi, always correcting</li>
+            <li><strong>Chatterbox:</strong> A true yapper at heart, always ready to chat</li>
+            <li><strong>Makeup Lover:</strong> Especially enjoys lip gloss and eyeliner</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Page 4: Notes -->
+<div class="page">
     <h2>Notes for Khadijah</h2>
-    <textarea id="noteInput" placeholder="Write your note here..."></textarea>
-    <button onclick="addNote()">Add Note</button>
-    <div class="saved-notes" id="savedNotesContainer"></div>
+    <div class="notes">
+        <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+        <button onclick="addNote()">Add Note</button>
+        <div class="saved-notes" id="savedNotesContainer"></div>
+    </div>
 </div>
 
+<!-- Footer -->
 <footer>
     <p>Always thinking of you, your fan</p>
     <p> Y <33</p>
 </footer>
 
+<!-- Floating Hearts Animation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💜';
+            heart.style.position = 'fixed';
+            heart.style.zIndex = 9999;
+            heart.style.fontSize = '25px';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+    });
+</script>
+
+<!-- Interactive Features -->
 <script>
     const compliments = [
         "Khadijah, you are the most beautiful girl in the world.",
@@ -297,23 +367,6 @@
             savedNotesContainer.appendChild(noteElement);
         });
     }
-
-    // Floating Hearts Animation
-    document.addEventListener('DOMContentLoaded', function() {
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '💜';
-            heart.style.position = 'fixed';
-            heart.style.zIndex = 9999;
-            heart.style.fontSize = '25px';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
-            document.body.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 5000);
-        }
-        setInterval(createHeart, 300);
-    });
 
     // Inside Joke Easter Egg
     let pickleCount = 0;
